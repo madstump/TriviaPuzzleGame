@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trivia/Knowledge Game Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f8ff;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .question {
+            display: none;
+            margin-bottom: 20px;
+        }
+        .question.active {
+            display: block;
+        }
+        .result {
+            display: none;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📚 Trivia/Knowledge Game Builder</h1>
+<div class="question active" id="q1">
+    <p><strong>1. What kind of knowledge will your game focus on?</strong></p>
+    <button onclick="nextQuestion('general')">General knowledge (fun facts & random trivia)</button><br>
+    <button onclick="nextQuestion('school_subject')">School subject (history, science, math, etc.)</button><br>
+    <button onclick="nextQuestion('theme_topic')">A theme or topic (sports, movies, animals, etc.)</button>
+</div>
+
+<div class="question" id="q2">
+    <p><strong>2. How do players answer questions?</strong></p>
+    <button onclick="nextQuestion('multiple_choice')">Multiple choice answers</button><br>
+    <button onclick="nextQuestion('write_in')">Write or shout the correct answer</button><br>
+    <button onclick="nextQuestion('team_vote')">Vote or guess together as a team</button>
+</div>
+
+<div class="question" id="q3">
+    <p><strong>3. How do players move or compete?</strong></p>
+    <button onclick="nextQuestion('board')">Move along a board when they answer correctly</button><br>
+    <button onclick="nextQuestion('points')">Earn points and track score</button><br>
+    <button onclick="nextQuestion('survival')">Get eliminated if they’re wrong too many times</button>
+</div>
+
+<div class="question" id="q4">
+    <p><strong>4. What twist will make the game more fun?</strong></p>
+    <button onclick="nextQuestion('powerups')">Power-ups or bonus cards</button><br>
+    <button onclick="nextQuestion('wacky_challenges')">Silly challenges with some questions</button><br>
+    <button onclick="nextQuestion('speed_rounds')">Speed rounds or timed questions</button>
+</div>
+
+<div class="question" id="q5">
+    <p><strong>5. How do you want the game to end?</strong></p>
+    <button onclick="showResult('score_win')">Whoever has the most points wins</button><br>
+    <button onclick="showResult('race_win')">First to the finish line wins</button><br>
+    <button onclick="showResult('last_player')">Last player standing wins</button>
+</div>
+
+<div class="result" id="resultBox">
+    <h2>Your Game Blueprint</h2>
+    <p id="gameSummary"></p>
+    <button onclick="restartQuiz()">🔁 Retry</button>
+</div>
+
+<script>
+    let currentQuestion = 1;
+    let answers = [];
+
+    function nextQuestion(answer) {
+        answers.push(answer);
+        document.getElementById("q" + currentQuestion).classList.remove("active");
+        currentQuestion++;
+        document.getElementById("q" + currentQuestion).classList.add("active");
+    }
+
+    function showResult(finalAnswer) {
+        answers.push(finalAnswer);
+        document.getElementById("q" + currentQuestion).classList.remove("active");
+        document.getElementById("resultBox").style.display = "block";
+        document.getElementById("gameSummary").innerText = generateSummary();
+    }
+
+    function generateSummary() {
+        const topic = answers[0];
+        const answerStyle = answers[1];
+        const gameType = answers[2];
+        const twist = answers[3];
+        const win = answers[4];
+
+        let topicText = topic === 'general' ? "random trivia and general knowledge" :
+                        topic === 'school_subject' ? "a school subject like science or history" :
+                        "a specific theme like movies, music, or sports";
+        let answerStyleText = answerStyle === 'multiple_choice' ? "choose from multiple choice options" :
+                              answerStyle === 'write_in' ? "write or say the answer aloud" :
+                              "discuss and vote as a team";
+        let gameTypeText = gameType === 'board' ? "move on a game board" :
+                           gameType === 'points' ? "earn points and keep score" :
+                           "get eliminated after a set number of wrong answers";
+        let twistText = twist === 'powerups' ? "cards that give bonus points or help" :
+                        twist === 'wacky_challenges' ? "wacky mini-challenges between rounds" :
+                        "timed speed rounds to raise the stakes";
+        let winText = win === 'score_win' ? "most points at the end" :
+                      win === 'race_win' ? "first to the end of the board" :
+                      "last player remaining after eliminations";
+
+        return `Your trivia/knowledge game will focus on ${topicText}. Players will ${answerStyleText}, and they will ${gameTypeText}. To make it fun, the game includes ${twistText}, and the winner is the player with ${winText}. Start by writing 20 trivia questions, creating a scoreboard or board path, and designing any bonus or challenge cards you want to use!`;
+    }
+
+    function restartQuiz() {
+        answers = [];
+        document.getElementById("resultBox").style.display = "none";
+        currentQuestion = 1;
+        document.getElementById("q1").classList.add("active");
+    }
+</script>
+
+</body>
+</html>
